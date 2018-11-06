@@ -6,6 +6,7 @@
     <script type="text/javascript" src="./underscore.js"></script>
     <script type="text/javascript">
 
+      let useAlt = false;
       let req, template;
       let outputEl, nameField, titleField, officeField, mobileField;
 
@@ -17,11 +18,22 @@
         mobileField = document.getElementById('mobile-phone');
 
         // load template html
+        loadTemplateFile();
+        // req = new XMLHttpRequest();
+        // req.onload = loadedTemplate;
+        // req.open("get", "sig-alt.html", true);
+        // req.send();
+      });
+
+      function loadTemplateFile() {
+        let fileName = useAlt ? 'sig-alt.html' : 'sig.html';
+
+        // load template html
         req = new XMLHttpRequest();
         req.onload = loadedTemplate;
-        req.open("get", "sig.html", true);
+        req.open("get", fileName, true);
         req.send();
-      });
+      }
 
       function loadedTemplate() {
         template = _.template(req.responseText);
@@ -251,6 +263,10 @@
         <input id="mobile-phone" type="tel">
         <span class="no-select">mobile phone</span>
     </div>
+    <div class="input">
+        <input id="use-alt" type="checkbox">
+        <span class="no-select">alternate layout</span>
+    </div>
 </form>
 
 <!-- <h4 class="no-select step-two">Step 2: Check it out.</h4> -->
@@ -271,5 +287,11 @@
     <h6 style="margin-bottom: 0;">Curated by Eddie Seitz</h6>
     <a href="http://eddieseitz.com" target="_blank" style="font-size: 14px;">eddieseitz.com</a>
 </footer>
+<script>
+    document.getElementById('use-alt').addEventListener('change', function() {
+        useAlt = this.checked;
+        loadTemplateFile();
+    });
+</script>
 </body>
 </html>
